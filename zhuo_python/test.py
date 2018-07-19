@@ -8,7 +8,7 @@ from pairing_me import *
 from hamiltonian import *
 
 
-sp_obits_num_p = 12
+sp_obits_num_p = 4
 particle_num = 4
 
 pairing_d = 1

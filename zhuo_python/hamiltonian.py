@@ -52,6 +52,7 @@ class H_system:
         #print(format(sla_i_t,'0b'),sla_i_t,format(sla_i,'0b'))
         diff = sla_f^sla_i_t
         #print(format(diff,'0b'),diff)
+        pre_factor_diag_me = self.particle_num/4
         num = self.countBit(diff)
         if(num > 5):
             return 0.0
@@ -71,7 +72,7 @@ class H_system:
             for index in pos3:
                 e_i += self.sp_state[index].p * self.d
             #print('\t e_i ',e_i)
-            return e_i-1*self.g
+            return e_i-pre_factor_diag_me*self.g
         elif(len_pos == 4):
             conf = str(pos[0]) + str(pos[1]) +str(pos[2]) +str(pos[3])
             #print('conf', conf)
