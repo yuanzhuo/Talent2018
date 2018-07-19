@@ -25,6 +25,7 @@ class PH_Combain:
 
     def find_fermi(self):
         fermi_index = -1;
+        print("###",self.particle_num)
         if((self.particle_num% 2) == 0):
             fermi_index=self.particle_num-1
         else:
