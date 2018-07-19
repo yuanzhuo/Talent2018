@@ -16,7 +16,8 @@ class SP:
 class Basis_SP:
     'A collection of Single Particle Basis'
     def __init__(self,sp_num,energy_gap):
-        self.sp_num = sp_num
+        self.sp_num_p = sp_num
+        self.sp_num = sp_num * 2
         self.energy_gap=energy_gap
         self.state = []
         self.state_size = 0
@@ -24,7 +25,7 @@ class Basis_SP:
     def build(self):
         p=0
         index = 0
-        while(p<self.sp_num):
+        while(p<self.sp_num_p):
             spin = -1
             energy = p * self.energy_gap
             sp_t=SP(p,spin,energy,index)

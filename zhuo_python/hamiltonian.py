@@ -67,11 +67,11 @@ class H_system:
                 pos3.append(len(self.sp_state)-i-1)
 
             e_i = 0
-            print('pos3',pos3)
+            #print('pos3',pos3)
             for index in pos3:
                 e_i += self.sp_state[index].p * self.d
-            print('\t e_i ',e_i)
-            return e_i-1*self.d
+            #print('\t e_i ',e_i)
+            return e_i-1*self.g
         elif(len_pos == 4):
             conf = str(pos[0]) + str(pos[1]) +str(pos[2]) +str(pos[3])
             #print('conf', conf)
