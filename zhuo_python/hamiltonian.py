@@ -93,8 +93,8 @@ class H_system:
 
     def diag(self):
         a,b=np.linalg.eig(self.h_tot)
-        print(a)
-        print(b)
+        print(min(a))
+        #print(b)
 
     def print_me(self):
         for i in self.h_tot:
