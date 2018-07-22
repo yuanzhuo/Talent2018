@@ -52,6 +52,9 @@ class H_system:
         #print(format(sla_i_t,'0b'),sla_i_t,format(sla_i,'0b'))
         diff = sla_f^sla_i_t
         #print(format(diff,'0b'),diff)
+        if( self.particle_num%4 != 0):
+            print("Wrong happened at cal_me")
+            sys.exit()
         pre_factor_diag_me = self.particle_num/4
         num = self.countBit(diff)
         if(num > 5):
@@ -94,8 +97,9 @@ class H_system:
 
     def diag(self):
         a,b=np.linalg.eig(self.h_tot)
-        print(min(a))
+        #print(min(a), min(a)-self.h_tot[0][0])
         #print(b)
+        return min(a), min(a)-self.h_tot[0][0]
 
     def print_me(self):
         for i in self.h_tot:

@@ -185,6 +185,7 @@ class Build_Slater:
     def cal_sla_bin(self,h_index,p_index,fermi_index):
         if(self.sla_particle_num-1 != fermi_index):
             print('Wrong happened at cal_sla_bin fermi_index', fermi_index, 'self.sla_particle_num', self.sla_particle_num-1)
+            sys.exit()
         sla_e = self.sla_0
         #print(format(sla_e,'0b'),'##')
         for h in h_index:
