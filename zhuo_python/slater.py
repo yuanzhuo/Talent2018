@@ -199,7 +199,7 @@ class Build_Slater:
 
 
     def build_ph(self, ph_comb):
-        #self.sla_ph[ph_type][i]
+        #self.sla_ph_block[ph_type][i]
         size_conf_type = len(ph_comb.ph_state)
         sla_ph = []
         sla_ph_block = []
@@ -230,7 +230,7 @@ class Build_Slater:
         self.sla_num = sla_ph_num
 
 
-    def print_ph(self):
+    def print_ph_block(self):
         #print the ph_type : int & binary form
         i=0
         print('sla num : ', self.sla_num)
@@ -246,4 +246,14 @@ class Build_Slater:
                     print(sla)
                     print("\t i : ", index,"\t",sla,"\t",format(sla,'0b'))
                     index += 1
+
+    def print_ph(self):
+        #print the ph_type : int & binary form
+        i=0
+        for sla in self.sla_ph:
+            print("\t i : ", i,"\t",sla,"\t",format(sla,'0b'))
+            i+=1
+
+
+
 

@@ -46,6 +46,7 @@ class H_system:
 
 
     def cal_me(self,sla_f,sla_i):
+
         'interaction part and with e_i single particle energy'
         #print(format(sla_f,'0b'),sla_f)
         sla_i_t = self.clearBit(sla_i,len(self.sp_state))
@@ -77,7 +78,7 @@ class H_system:
             #print('\t e_i ',e_i)
             return e_i-pre_factor_diag_me*self.g
         elif(len_pos == 4):
-            conf = str(pos[0]) + str(pos[1]) +str(pos[2]) +str(pos[3])
+            conf = str(pos[0])+"-" + str(pos[1])+"-" +str(pos[2])+"-" +str(pos[3])
             #print('conf', conf)
             if conf in self.me_dic:
                 return self.me_dic[conf]

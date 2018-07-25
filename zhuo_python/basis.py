@@ -15,10 +15,11 @@ class SP:
 
 class Basis_SP:
     'A collection of Single Particle Basis'
-    def __init__(self,sp_num,energy_gap):
+    def __init__(self,sp_num,energy_gap,particle_num):
         self.sp_num_p = sp_num
         self.sp_num = sp_num * 2
         self.energy_gap=energy_gap
+        self.particle_num = particle_num
         self.state = []
         self.state_size = 0
 
@@ -37,11 +38,24 @@ class Basis_SP:
             index+=1
             p+=1
         self.state_size = len(self.state)
+        self.fermi_index = self.find_fermi()
+        print("SP fermi_index : ",self.fermi_index)
+
+    def find_fermi(self):
+        fermi_index = -1;
+        #print("###",self.particle_num)
+        if((self.particle_num% 2) == 0):
+            fermi_index=self.particle_num-1
+        else:
+            print('odd particle can`t find fermi surface')
+            fermi_index=self.particle_num-1
+            sys.exit()
+        return fermi_index
 
     def print_state(self):
         print ("index \t p \t spin \t energy")
         i=0
         for sp_t in self.state:
-            print(i,sp_t.p,sp_t.spin,sp_t.energy)
+            print(i,"\t ",sp_t.p,"\t ",sp_t.spin,"\t ",sp_t.energy)
             i+=1
 
