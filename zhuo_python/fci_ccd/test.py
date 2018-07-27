@@ -10,17 +10,17 @@ from hamiltonian import *
 from ccsd_me import *
 
 
-sp_obits_num_p = 14
-particle_num = 8
-
-pairing_d = 1
-pairing_g = -1*0.5
-
-pairing_g = pairing_g*2
-
-sps_t=Basis_SP(sp_obits_num_p,pairing_d,particle_num)
-sps_t.build()
-sps_t.print_state()
+# sp_obits_num_p = 8
+# particle_num = 4
+#
+# pairing_d = 1
+# pairing_g = -1*0.5
+#
+# pairing_g = pairing_g*2
+#
+# sps_t=Basis_SP(sp_obits_num_p,pairing_d,particle_num)
+# sps_t.build()
+# sps_t.print_state()
 
 # ==============++++++++++==============#
 # basis_exc = PH_Combain(sps_t,particle_num)
@@ -64,13 +64,21 @@ sps_t.print_state()
 
 
 # ==============++++++++++==============#
+sp_obits_num_p = 12
+particle_num = 4
 
+sps_t=Basis_SP(sp_obits_num_p,1,particle_num)
+sps_t.build()
+sps_t.print_state()
 pairing_me = Pairing_ME(sps_t)
 #
 i=0
 #g_vec = [-0.8]
-#g_vec = np.arange(-1,1.1,0.1)
-g_vec = [0.5]
+g_vec = np.arange(-1,1,0.2)
+#ccsd_limt = np.zeros((len(g_vec),3))
+#ccsd_conv = np.zeros((len(g_vec),2))
+ccsd_conv = np.zeros((len(g_vec),200))
+#g_vec = [-1]
 for g_v in g_vec:
     print("g_v : ", g_v)
     pairing_g = g_v
@@ -78,14 +86,20 @@ for g_v in g_vec:
     ccsd_me = CCSD_ME(sps_t,pairing_me)
     H_bar = ccsd_me.build_Hbar()
     ccsd_me.cal_New_T2_pphh(H_bar)
-    ccsd_me.iter()
+    Iter_Info = ccsd_me.iter()
     Ec = ccsd_me.Ec_cal()
-    ccsd_vec[i][0]=g_v
-    ccsd_vec[i][1]=Ec
+    loop_time = ccsd_me.loop_time
+    j = 0
+    for it in Iter_Info:
+        ccsd_conv[i][j]=it
+        j+=1
+    # ccsd_limt[i][0]=g_v
+    # ccsd_limt[i][1]=loop_time
+    # ccsd_limt[i][2]=Ec
     i+=1
-    print("==== g_v ==== : ",g_v,"\t Ec : ",Ec)
+    print("== g_v == : ",g_v,"\t loop_time : ",ccsd_me.loop_time,"\t Ec : ",Ec)
 #
-# np.savetxt('ccsd_eight_sp14.txt',ccsd_vec)
+np.savetxt("data/ccsd_conv_four_sp12.txt",ccsd_conv)
 # conf = str(10)+"-"+str(1)+"-"+str(10)+"-"+str(1)
 # pairing_me.print_me()
 # print(conf,pairing_me.me_dic[conf])
