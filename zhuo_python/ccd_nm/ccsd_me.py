@@ -85,7 +85,7 @@ class CCSD_ME:
         self.V_pppp = np.zeros((self.nu_size,self.nu_size,self.nu_size,self.nu_size))
         self.f_me_hh = np.zeros((self.A_size,self.A_size))
         self.f_me_pp = np.zeros((self.nu_size,self.nu_size))
-        self.f_dom_abij = np.zeros((self.nu_size,self.nu_size,self.nu_size,self.nu_size))
+        self.f_dom_abij = np.zeros((self.nu_size,self.nu_size,self.A_size,self.A_size))
         self.H_bar = np.zeros((self.nu_size,self.nu_size,self.A_size,self.A_size))
 
         self.A_list = np.arange(0,self.A_size)

@@ -45,8 +45,8 @@ E_fig_C = ["CCD SP orbits: 10","CCD SP orbits: 12","CCD SP orbits: 14"]
 data_four =[]
 f=0
 for file in F:
-    data_four_t = np.loadtxt(file)
-    data = np.zeros((2,len(data_four_t)))
+        data_four_t = np.loadtxt(file)
+        data = np.zeros((2,len(data_four_t)))
     i=0
     while i<len(data_four_t):
         data[0][i]=data_four_t[i][0]
@@ -71,7 +71,7 @@ for file in F_ccsd:
 
 
     f+=1
-    
+
 
 plt.xlim(-1.05,1.05)
 plt.legend(loc='lower left')
