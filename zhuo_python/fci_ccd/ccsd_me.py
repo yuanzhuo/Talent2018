@@ -85,7 +85,7 @@ class CCSD_ME:
         self.V_pppp = np.zeros((self.nu_size,self.nu_size,self.nu_size,self.nu_size))
         self.f_me_hh = np.zeros((self.A_size,self.A_size))
         self.f_me_pp = np.zeros((self.nu_size,self.nu_size))
-        self.f_dom_abij = np.zeros((self.nu_size,self.nu_size,self.A_size,self.A_ssize))
+        self.f_dom_abij = np.zeros((self.nu_size,self.nu_size,self.A_size,self.A_size))
         self.H_bar = np.zeros((self.nu_size,self.nu_size,self.A_size,self.A_size))
 
         self.A_list = np.arange(0,self.A_size)
@@ -143,10 +143,10 @@ class CCSD_ME:
                 val=self.cal_f_pq(i,j)
                 #print(i,j,val)
                 self.f_me_hh[i][j]=val
-        #print(" f_me_hh : ")
-        #print(self.f_me_hh)
-        #print(" f_me_pp : ")
-        #print(self.f_me_pp)
+        print(" f_me_hh : ")
+        print(self.f_me_hh)
+        print(" f_me_pp : ")
+        print(self.f_me_pp)
 
 
 
@@ -448,8 +448,21 @@ class CCSD_ME:
 
     def E_tot_cal(self):
         E_ref = self.V_hhhh[0][0][0][0] + 2
+        e_ii = 0
+        e_v = 0
+        for i in self.A_list:
+            e_ii += self.sp.state[i].energy
+            for j in self.A_list:
+                if i == j:
+                    continue
+                e_v += self.V_hhhh[i][j][i][j]
+
+        E_ref_2 = e_ii + 0.5*e_v
+        print("++++  e_ii : ",e_ii," ++++ 0.5*e_v : ",0.5*e_v)
+        #print("++++  E_ref : ",E_ref," ++++ E_ref_2 : ",E_ref_2)
 
         E_tot = E_ref + 1.0/4 * np.einsum('abij,abij',self.T_pphh,self.V_pphh)
+        print("++++  E_ref : ",E_ref," ++++ E_ref_2 : ",E_ref_2," +++++ E_tot : ",E_tot)
         return E_tot
 
     def ein_sum_A2_B4_23(self,A,B):

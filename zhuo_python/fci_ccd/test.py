@@ -10,7 +10,7 @@ from hamiltonian import *
 from ccsd_me import *
 
 
-sp_obits_num_p = 8
+sp_obits_num_p = 4
 particle_num = 4
 
 pairing_d = 1
@@ -38,25 +38,30 @@ g_vec = np.arange(-1.0,1.1,0.1)
 res_vec = np.zeros((len(g_vec),2))
 ccsd_vec = np.zeros((len(g_vec),2))
 i=0
+g_vec=[0.5]
 for g_v in g_vec:
     pairing_g = g_v
     me.build(1,pairing_g)
     h = H_system(sps_t,slater,me)
     h.build_me()
+    h.print_me()
+
     E_corr = h.diag()[1]
+    print("E_corr : ",E_corr)
+    sys.exit()
     #E_corr = -1
     print(E_corr)
     #res_vec[i]=E_corr
     res_vec[i][0]=g_v
     res_vec[i][1]=E_corr
     i+=1
-
-i=0
-for res in res_vec:
-    print(res[0],'\t',res[1])
-    i+=1
-
-np.savetxt('eight_sp14.txt',res_vec)
+#
+# i=0
+# for res in res_vec:
+#     print(res[0],'\t',res[1])
+#     i+=1
+#
+# # np.savetxt('eight_sp14.txt',res_vec)
 
 # print(res_vec[0])
 # #plt.plot(res_vec[0],res_vec[1])
@@ -64,8 +69,11 @@ np.savetxt('eight_sp14.txt',res_vec)
 
 
 # ==============++++++++++==============#
-# sp_obits_num_p = 12
+#
+# sp_obits_num_p = 8
 # particle_num = 4
+#
+#
 #
 # sps_t=Basis_SP(sp_obits_num_p,1,particle_num)
 # sps_t.build()
@@ -78,7 +86,7 @@ np.savetxt('eight_sp14.txt',res_vec)
 # #ccsd_limt = np.zeros((len(g_vec),3))
 # #ccsd_conv = np.zeros((len(g_vec),2))
 # ccsd_conv = np.zeros((len(g_vec),200))
-# g_vec = [-1]
+# g_vec = [-0.05]
 # for g_v in g_vec:
 #     print("g_v : ", g_v)
 #     pairing_g = g_v
@@ -88,6 +96,7 @@ np.savetxt('eight_sp14.txt',res_vec)
 #     ccsd_me.cal_New_T2_pphh(H_bar)
 #     Iter_Info = ccsd_me.iter()
 #     Ec = ccsd_me.Ec_cal()
+#     ccsd_me.E_tot_cal()
 #     loop_time = ccsd_me.loop_time
 #     j = 0
 #     for it in Iter_Info:

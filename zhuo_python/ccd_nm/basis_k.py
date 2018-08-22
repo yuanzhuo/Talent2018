@@ -161,7 +161,7 @@ class Basis_TB_k:
             self.P12_channel[i].index = i
             i+=1
         print("P_channel_size : ",len(self.P12_channel))
-        #self.print_P12_channel()
+        self.print_P12_channel()
 
     def print_P12_channel(self):
         for p in self.P12_channel:

@@ -113,9 +113,9 @@ class CCSD_NM_ME:
                 self.f_me_pp[i][j]=val
 
         # print(" f_me_hh : ")
-        # print(self.f_me_hh.nonzero())
+        # print(self.f_me_hh[self.f_me_hh.nonzero()])
         # print(" f_me_pp : ")
-        # print(self.f_me_pp.nonzero())
+        # print(self.f_me_pp[self.f_me_pp.nonzero()])
 
     def build_V(self):
         # V_me_pphh V_me_pppp V_me_hhhh
@@ -375,9 +375,11 @@ class CCSD_NM_ME:
             T_pphh_ch.append(T_pphh_t)
         # --------------- for ch ----------------- #
         self.T_pphh = np.array(T_pphh_ch)
-        # for ch in ch_list:
-        #     if( self.T_pphh[ch].shape[0]>0):
-        #         print("ch : ",ch,"T_pppp shape : ", self.T_pphh[ch].shape )
+        for ch in self.ch_list:
+            if( self.T_pphh[ch].shape[0]>0 ):
+                print("ch : ",ch,"T_pppp shape : ", self.T_pphh[ch].shape )
+            if(ch ==1):
+                print( self.T_pphh[1][self.T_pphh[1].nonzero()] )
 
 
     def build_Hbar(self):
@@ -442,13 +444,14 @@ class CCSD_NM_ME:
     def iter(self):
         self.iter_flag = 1
         H_bar = self.build_Hbar()
+        Iter_Info = []
         #A=np.reshape(H_bar,(H_bar.size,))
         H_sum = 0.0
         for a in H_bar:
             for b in a:
                 for i in b:
                     H_sum += i*i
-        print(H_sum)
+        print("H_sum : ",H_sum, "Ec_cal : ", self.Ec_cal())
         eps = 0.00000001
         time_i = 0
         #E_tot = self.E_tot_cal()
@@ -456,6 +459,8 @@ class CCSD_NM_ME:
         while (time_i < 1000):
             self.cal_New_T2_pphh(H_bar)
             H_bar = self.build_Hbar()
+            Ec = self.Ec_cal()
+            Iter_Info.append(Ec)
             H_sum = 0.0
             for a in H_bar:
                 for b in a:
@@ -471,11 +476,13 @@ class CCSD_NM_ME:
             # print("E_tot_diff",E_tot_diff)
             # if(E_tot_diff<eps):
             #     break
+            self.loop_time = time_i
             time_i+=1
 
             if(H_sum > 10000):
                 self.iter_flag = -1
                 break
+        return Iter_Info
 
     def build_Hbar_ch(self,T_ch,ch):
 
@@ -517,7 +524,7 @@ class CCSD_NM_ME:
                 continue
             time_i = -1
 
-            while (time_i < 1000):
+            while (time_i < 10000):
                 time_i += 1
                 if time_i == 0:
                     H_bar_ch = self.build_Hbar_ch(self.T_pphh[ch],ch)
@@ -528,7 +535,7 @@ class CCSD_NM_ME:
                     T_ch = T_ch_new
                 H_sum = np.einsum("ij,ij->",H_bar_ch,H_bar_ch)
                 #print("ch : ",ch," H_sum : ",H_sum)
-                if(H_sum<eps or H_sum == np.nan):
+                if(H_sum<eps or H_sum == np.nan ):
                     T_pphh_l.append(T_ch)
                     break
             #quit()
@@ -589,6 +596,8 @@ class CCSD_NM_ME:
         for i in self.tb_k.A_list:
             e_ii += self.sps_k.state[i].E
         e_v = 0
+        index_num = 0
+        v_l = []
         for i in self.sp_A_list:
             a= self.sps_k.state[i]
             for j in self.sp_A_list:
@@ -606,9 +615,17 @@ class CCSD_NM_ME:
                 S12_2 = a.s2_z + b.s2_z
                 tb_t = TB_k(a.index,b.index,ab_xyz,k12,s2_1,s2_2,S12_2)
                 v_t = self.Minn_me.cal_V_neu_as(tb_t,tb_t)
+                v_l.append(v_t)
                 e_v+=v_t
-                #print("i : ",i,a_xyz,s2_1,b_xyz,s2_2,v_t)
+                print(index_num,"i : ",i,a_xyz,s2_1,b_xyz,s2_2,v_t)
+                index_num += 1
                 #quit()
+        v_l.sort()
+        i = 0
+        # for v in v_l:
+        #     print("i : ",i,v)
+        #     i+=1
+        #print(v_l)
 
         E_ref = e_ii + 0.5*e_v
         print("------ e_ii/14 = ",e_ii/14," ---- 0.5*e_v = ",0.5*e_v)

@@ -51,14 +51,17 @@ from ccsd_nm import *
 
 # ==============++++++++++==============#
 
-N_max = 3
+N_max = 1
 particle_num = 14
 
 
 rho_list = np.arange(0.025,0.4,0.05)
-E_tot_vec = np.zeros((len(rho_list),2))
+E_tot_vec = np.zeros((len(rho_list),3))
+ccsd_limt = np.zeros((len(rho_list),3))
+ccsd_conv = np.zeros((len(rho_list),200))
 i=0
-rho_list = [0.08]
+#rho_list = [0.08]
+
 for rho in rho_list:
     sps_k=Basis_SP_K(N_max,particle_num)
     sps_k.cal_nL(0,rho)
@@ -72,6 +75,7 @@ for rho in rho_list:
     print("-------!!!! -------test_point 3 ")
     #quit()
     #tb_k.print_ch(38)
+
     minn_me = Minn_ME(sps_k,tb_k)
     print("-------!!!! -------test_point 4 ")
     ccsd_nm = CCSD_NM_ME(sps_k,tb_k,minn_me)
@@ -79,17 +83,25 @@ for rho in rho_list:
     #ccsd_nm.build_V_2()
     print("-------!!!! -------test_point 6 ")
     #quit()
-    ccsd_nm.iter_ch()
+    Iter_Info = ccsd_nm.iter()
     E_tot = ccsd_nm.Etot_cal()
-    #E_corr = ccsd_nm.Ec_cal()
+    E_corr = ccsd_nm.Ec_cal()
     #ccsd_nm.E_HF_test()
-    print("Pre-Fac",minn_me.pre_factor)
+    j=0
+    for it in Iter_Info:
+         ccsd_conv[i][j]=it
+         j+=1
+    #quit()
+    #print("Pre-Fac",minn_me.pre_factor)
 
-    print("** rho :",rho,"\t *** E_c/14 : ",ccsd_nm.E_corr/14," *** E_ref/14 : ",ccsd_nm.E_ref/14," *** E_tot : ",ccsd_nm.E_tot)
-    #E_tot_vec[i][0] = rho
-    #E_tot_vec[i][1] = ccsd_nm.E_tot
+    print("** rho :",rho,"\t *** E_c : ",ccsd_nm.E_corr," *** E_ref/14 : ",ccsd_nm.E_ref/14," *** E_tot : ",ccsd_nm.E_tot)
+    E_tot_vec[i][0] = rho
+    E_tot_vec[i][2] = ccsd_nm.E_corr
+    E_tot_vec[i][1] = ccsd_nm.E_tot
+
     i+=1
-#np.savetxt('data/Nmax_1.txt',E_tot_vec)
+#np.savetxt('data/Nmax_2.txt',E_tot_vec)
+np.savetxt("data/ccsd_conv_nm.txt",ccsd_conv)
 
 # ==============++++++++++==============#
 
