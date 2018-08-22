@@ -54,8 +54,10 @@ i_list = [0,1,2,3,4,5,10,20,30,40]
 
 def draw_heatmap(data,xlabels,ylabels,index):
 
-    cmap = cm.Blues
-    #cmap = cm.get_cmap('rainbow',1000)
+    #cmap = cm.Blues
+    cmap = cm.binary
+    
+    #cmap = cm.get_cmap('rainbow',10)
 
 
     figure=plt.figure(facecolor='w')
@@ -69,6 +71,7 @@ def draw_heatmap(data,xlabels,ylabels,index):
     ax.set_xticks(range(len(xlabels)))
 
     ax.set_xticklabels(xlabels)
+    ax.xaxis.tick_top()
 
     vmax=data[0][0]
 
@@ -104,9 +107,9 @@ for i in i_list:#[0:1]:
     # out_g = "data/temp_G_Test" + str(i) +".eps"
     # plt.savefig(out_g,format='eps')
     # print(out_g)
-    xlabels=['A','B','C','D','E','F','G','H','I','J']
+    xlabels=['$0p0h$','$1p1h$','$2p2h$','$3p3h$','$4p4h$']
 
-    ylabels=['a','b','c','d','e','f','g','h','i','j']
+    #ylabels=['a','b','c','d','e','f','g','h','i','j']
     
     len_data = len(data_F)
     #print(data_F)
@@ -121,7 +124,7 @@ for i in i_list:#[0:1]:
     
     print(data_F)
     print("len_data : ",len_data)
-    draw_heatmap(data_F,xlabels[0:len_data],ylabels[0:len_data],i)
+    draw_heatmap(data_F,xlabels[0:len_data],xlabels[0:len_data],i)
 
 
 
