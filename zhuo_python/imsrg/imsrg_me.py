@@ -721,7 +721,7 @@ class IMSRG_ME:
         dE_1 = dE_d * 0.1
         #quit()
         time_i = -1
-        eps = 0.001
+        eps = 0.0001
         while (time_i < 100):
             time_i += 1
             index_1 = -1
@@ -772,9 +772,3 @@ class IMSRG_ME:
             if(abs(dE_d) < eps or V_me_s_diff < eps):
                 self.dE = dE_1
                 break
-
-
-
-
-
-

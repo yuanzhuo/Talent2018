@@ -142,25 +142,47 @@ for g_v in g_vec:
 
 
 basis_exc = PH_Combain(sps_t,particle_num)
-ph_type_vec=[2,3,4]
+ph_type_vec=[1,2,3,4]
 basis_exc.build(ph_type_vec,0)
 # basis_exc.print_BE()
 # basis_exc.print_pair()
 slater = Build_Slater(sps_t.sp_num,particle_num)
 slater.build_ph(basis_exc)
+h_block_size = len(slater.sla_ph_block)
+slater.print_ph()
 slater.print_ph_block()
+print(slater.sla_ph_block_info)
 #sys.exit()
+
 conv_size = len(srg_f_s)
 conv_time = np.arange(0,conv_size)
+hb_list = np.arange(0,h_block_size)
+H2_sum = np.zeros([conv_size,h_block_size,h_block_size])
 for i in conv_time:
     f_s = srg_f_s[i]
     V_s = srg_V_s[i]
     h = H_system(sps_t,slater,f_s,V_s)
     h.build_me()
-    print("\t ------ ------ ------ ")
-    print("\t ------ ------ ------ ")
+    #h.print_me()
+    h2_vec = abs(h.h_tot)
+    for hb_x in hb_list:
+        x_beg = slater.sla_ph_block_info[hb_x][0]
+        x_end = slater.sla_ph_block_info[hb_x][1]+1
+        x_list = np.arange(x_beg,x_end)
+        for hb_y in hb_list:
+            y_beg = slater.sla_ph_block_info[hb_y][0]
+            y_end = slater.sla_ph_block_info[hb_y][1]+1
+            y_list = np.arange(y_beg,y_end)
+            #print(hb_x,hb_y,x_list,"\t",y_list)
+            # val = sum(h2_vec[x_beg:x_end,y_beg:y_end])
+            val = sum(map(sum,h2_vec[x_beg:x_end,y_beg:y_end]))
+            #print(hb_x,hb_y,"\t",val)
+            H2_sum[i][hb_x][hb_y]=val
+            F = "data/srg_conv_H_" + str(i)+".txt"
+            np.savetxt(F,H2_sum[i])
 
-    h.print_me()
+
+    #h.print_me()
     #E_corr = h.diag()[1]
     #print("E_corr : ",E_corr)
     #sys.exit()
@@ -178,5 +200,3 @@ for i in conv_time:
 # for i in np.arange(0,len(srg_conv_G)):
 #     F = "data/srg_conv_G_" + str(i)+".txt"
 #     np.savetxt(F,srg_conv_G[i])
-
-

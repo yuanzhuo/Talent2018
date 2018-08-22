@@ -94,7 +94,7 @@ class H_system:
             e_ij = 0
             for index_i in pos3:
                 e_ij += self.v2b[pos_f[0]][index_i][pos_i[0]][index_i]
-
+        
             res = e_i + e_ij
             #print('\t e_i ',e_i)
             return res
@@ -131,9 +131,3 @@ class H_system:
     def print_me(self):
         for i in self.h_tot:
             print(np.round(i,2))
-
-
-
-
-
-

@@ -203,6 +203,9 @@ class Build_Slater:
         size_conf_type = len(ph_comb.ph_state)
         sla_ph = []
         sla_ph_block = []
+        sla_ph_block_info = []
+        index_end = 0
+        sla_ph_block_info.append([0,0])
         sla_0_a = [self.sla_0]
         sla_ph_block.append(sla_0_a)
         sla_ph.append(self.sla_0)
@@ -211,6 +214,7 @@ class Build_Slater:
             size_t = len(ph_state)
             #print('ph_size : ', size_t)
             sla_0_a = []
+            index_beg = index_end+1
             i=0
             for pair in ph_state:
                 h = pair.tup_h
@@ -224,10 +228,15 @@ class Build_Slater:
                 sla_ph_num += 1
                 i+=1
                 #print(format(sla_0_a[i],'0b'))
+            index_end = index_beg + i -1
+            index_beg_end = [index_beg,index_end]
+            sla_ph_block_info.append(index_beg_end)
             sla_ph_block.append(sla_0_a)
+
         self.sla_ph_block = sla_ph_block
         self.sla_ph = sla_ph
         self.sla_num = sla_ph_num
+        self.sla_ph_block_info = sla_ph_block_info
 
 
     def print_ph_block(self):
@@ -253,7 +262,3 @@ class Build_Slater:
         for sla in self.sla_ph:
             print("\t i : ", i,"\t",sla,"\t",format(sla,'0b'))
             i+=1
-
-
-
-
